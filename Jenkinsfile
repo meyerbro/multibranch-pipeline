@@ -1,4 +1,6 @@
 pipeline {
+  agent { node { label 'jenkins-master' } }
+
   stages {
     stage("Master") {
       when {
