@@ -1,16 +1,18 @@
 pipeline {
-  stage("Master") {
-    when {
-        branch "master"
+  stages {
+    stage("Master") {
+      when {
+          branch "master"
+      }
+      println "Master"
+      println "Running the container"
     }
-    println "Master"
-    println "Running the container"
-  }
-  stage("Integration") {
-    when {
-        branch "integration"
+    stage("Integration") {
+      when {
+          branch "integration"
+      }
+      println "Integration"
+      println "Building and testing the container"
     }
-    println "Integration"
-    println "Building and testing the container"
   }
 }
