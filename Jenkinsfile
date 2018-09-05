@@ -1,16 +1,40 @@
-node {
-  stage("Master") {
-    when {
-        branch "master"
+pipeline {
+  agent { node { label 'jenkins-master' } }
+
+  stages {
+    stage("Master") {
+      when {
+          branch "master"
+      }
+      steps {
+        println "Master"
+        println "Running the container"
+
+        sh "docker run nginx"
+      }
     }
-    println "Master"
-    println "Running the container"
-  }
-  stage("Integration") {
-    when {
-        branch "integration"
+    stage("Integration") {
+      when {
+          branch "integration"
+      }
+      steps {
+        println "Integration"
+        println "Building and testing the container"
+
+        sh "docker build . -t nginx"
+      }
     }
-    println "Integration"
-    println "Building and testing the container"
+    stage("PullRequest") {
+      if (env.CHANGE_ID) {
+         steps {
+           println "PullRequest"
+           println "Building and testing the container"
+
+           sh "docker build . -t nginx"
+           sh "docker run -it -p 8081:8081 nginx"
+           sh "curl localhost:8081"
+         }
+      }
+    }
   }
 }
