@@ -26,8 +26,8 @@ pipeline {
     }
     stage("PullRequest") {
       steps {
-        if (env.CHANGE_ID) {
-           steps {
+        steps {
+          if (env.CHANGE_ID) {
              println "PullRequest"
              println "Building and testing the container"
 
